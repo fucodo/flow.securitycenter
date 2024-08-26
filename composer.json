@@ -4,7 +4,7 @@
     "name": "fucodo/contact-securitycenter",
     "license": "MIT",
     "require": {
-        "neos/flow": "^6 || ^7 || ^8"
+        "neos/flow": "^6 || ^7 || ^8",
         "kaystrobach/backend": "*",
         "matomo/device-detector": "^6.3"
     },
