@@ -3,9 +3,6 @@
     "type": "neos-package",
     "name": "fucodo/contact-securitycenter",
     "license": "MIT",
-    "replace": {
-        "kaystrobach/contact-securitycenter": "*"
-    },
     "require": {
         "neos/flow": "*",
         "kaystrobach/backend": "*",
