@@ -205,25 +205,28 @@ class ActivityLogEntry
 
     public function setSeverity(string $severity): void
     {
+        if (!in_array($severity, [self::SEVERITY_OK, self::SEVERITY_NOTICE, self::SEVERITY_WARNING, self::SEVERITY_ERROR])) {
+            throw new \InvalidArgumentException($severity . 'is not allowed use one of the severity constants');
+        }
         $this->severity = $severity;
     }
 
-    public function getUserApproval(): DeviceEmbeddable|ApprovalEmbeddable
+    public function getUserApproval(): ApprovalEmbeddable
     {
         return $this->userApproval;
     }
 
-    public function setUserApproval(DeviceEmbeddable|ApprovalEmbeddable $userApproval): void
+    public function setUserApproval(ApprovalEmbeddable $userApproval): void
     {
         $this->userApproval = $userApproval;
     }
 
-    public function getAdminApproval(): DeviceEmbeddable|ApprovalEmbeddable
+    public function getAdminApproval(): ApprovalEmbeddable
     {
         return $this->adminApproval;
     }
 
-    public function setAdminApproval(DeviceEmbeddable|ApprovalEmbeddable $adminApproval): void
+    public function setAdminApproval(ApprovalEmbeddable $adminApproval): void
     {
         $this->adminApproval = $adminApproval;
     }
