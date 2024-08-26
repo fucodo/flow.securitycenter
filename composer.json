@@ -18,7 +18,7 @@
     },
     "extra": {
         "neos": {
-            "package-key": "KayStrobach.Contact.SecurityCenter"
+            "package-key": "fucodo.contact.securitycenter"
         }
     }
 }
