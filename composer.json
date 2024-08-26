@@ -10,6 +10,7 @@
     },
     "autoload": {
         "psr-4": {
+            "fucodo\\Contact\\SecurityCenter\\": "Classes/",
             "KayStrobach\\Contact\\SecurityCenter\\": "Classes/"
         }
     },
