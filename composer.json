@@ -15,7 +15,8 @@
     },
     "extra": {
         "neos": {
-            "package-key": "fucodo.contact.securitycenter"
+            "package-key": "fucodo.contact.securitycenter",
+            "installer-name": "fucodo.contact.securitycenter"
         }
     }
 }
