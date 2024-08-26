@@ -1,0 +1,17 @@
+KayStrobach:
+  Backend:
+    Backend:
+      Menu:
+        Security:
+          label: 'Security'
+          icon: 'bootstrap-shield-shaded'
+          position: end
+          subItems:
+            contact:
+              label: 'Sicherheitscenter'
+              icon: 'bootstrap-shield-exclamation'
+              iconBackground: '#de5a6a'
+              package: KayStrobach.Contact.SecurityCenter
+              controller: Notifications
+              action: index
+

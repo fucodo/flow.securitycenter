@@ -1,0 +1,23 @@
+{
+    "description": "",
+    "type": "neos-package",
+    "name": "fucodo/contact-securitycenter",
+    "replace": {
+        "kaystrobach/contact-securitycenter": "*"
+    },
+    "require": {
+        "neos/flow": "*",
+        "kaystrobach/backend": "*",
+        "matomo/device-detector": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "KayStrobach\\Contact\\SecurityCenter\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "KayStrobach.Contact.SecurityCenter"
+        }
+    }
+}
