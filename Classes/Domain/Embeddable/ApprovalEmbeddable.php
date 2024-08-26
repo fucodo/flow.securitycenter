@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter\Domain\Embeddable;
+namespace fucodo\contact\securitycenter\Domain\Embeddable;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
 

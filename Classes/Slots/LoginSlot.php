@@ -1,9 +1,9 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter\Slots;
+namespace fucodo\contact\securitycenter\Slots;
 
-use KayStrobach\Contact\SecurityCenter\Domain\Model\ActivityLogEntry;
-use KayStrobach\Contact\SecurityCenter\Domain\Repository\ActivityLogEntryRepository;
+use fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry;
+use fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Security\Authentication\TokenInterface;
 

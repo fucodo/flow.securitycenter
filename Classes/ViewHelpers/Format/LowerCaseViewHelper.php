@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter\ViewHelpers\Format;
+namespace fucodo\contact\securitycenter\ViewHelpers\Format;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 

@@ -1,12 +1,12 @@
 <?php
-namespace KayStrobach\Contact\SecurityCenter\Controller;
+namespace fucodo\contact\securitycenter\Controller;
 
 /*
  * This file is part of the KayStrobach.Contact.SecurityCenter package.
  */
 
 use KayStrobach\Backend\Controller\AbstractPageRendererController;
-use KayStrobach\Contact\SecurityCenter\Domain\Repository\ActivityLogEntryRepository;
+use fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 

@@ -1,11 +1,11 @@
 privilegeTargets:
   Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
-    KayStrobach_Contact_SecurityCenter_AllControllers:
-      matcher: 'method(KayStrobach\Contact\SecurityCenter\Controller\.*Controller->.*())'
+    fucodo_Contact_SecurityCenter_AllControllers:
+      matcher: 'method(fucodo\Contact\SecurityCenter\Controller\.*Controller->.*())'
 
 roles:
   'Neos.Flow:AuthenticatedUser':
     privileges:
       -
-        privilegeTarget: KayStrobach_Contact_SecurityCenter_AllControllers
+        privilegeTarget: fucodo_Contact_SecurityCenter_AllControllers
         permission: GRANT

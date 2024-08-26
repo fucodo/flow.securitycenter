@@ -1,5 +1,5 @@
 <?php
-namespace KayStrobach\Contact\SecurityCenter\Domain\Repository;
+namespace fucodo\contact\securitycenter\Domain\Repository;
 
 /*
  * This file is part of the KayStrobach.Contact.SecurityCenter package.

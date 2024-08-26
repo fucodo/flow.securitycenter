@@ -1,11 +1,11 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter\Domain\Model;
+namespace fucodo\contact\securitycenter\Domain\Model;
 
 use DateTimeImmutable;
-use KayStrobach\Contact\SecurityCenter\Domain\Embeddable\ApprovalEmbeddable;
-use KayStrobach\Contact\SecurityCenter\Domain\Embeddable\DeviceEmbeddable;
-use KayStrobach\Contact\SecurityCenter\Domain\Embeddable\NetworkAddressEmbeddable;
+use fucodo\contact\securitycenter\Domain\Embeddable\ApprovalEmbeddable;
+use fucodo\contact\securitycenter\Domain\Embeddable\DeviceEmbeddable;
+use fucodo\contact\securitycenter\Domain\Embeddable\NetworkAddressEmbeddable;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 

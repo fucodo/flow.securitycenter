@@ -1,9 +1,9 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter\Aspects;
+namespace fucodo\contact\securitycenter\Aspects;
 
-use KayStrobach\Contact\SecurityCenter\Domain\Model\ActivityLogEntry;
-use KayStrobach\Contact\SecurityCenter\Domain\Repository\ActivityLogEntryRepository;
+use fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry;
+use fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Security\Account;

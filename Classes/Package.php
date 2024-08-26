@@ -1,8 +1,8 @@
 <?php
 
-namespace KayStrobach\Contact\SecurityCenter;
+namespace fucodo\contact\securitycenter;
 
-use KayStrobach\Contact\SecurityCenter\Slots\LoginSlot;
+use fucodo\contact\securitycenter\Slots\LoginSlot;
 use Neos\Flow\Http\Helper\SecurityHelper;
 use Neos\Flow\Package\Package as BasePackage;
 use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
