@@ -77,15 +77,15 @@ class DeviceEmbeddable
 
         $dd->parse();
 
-        $this->clientFamily = Browser::getBrowserFamily($dd->getClient('name'));
-        $this->clientVersion = $dd->getClient('version');
-        $this->clientEngine = $dd->getClient('engine');
-        $this->osFamily = OperatingSystem::getOsFamily($dd->getOs('name'));
-        $this->osVersion = $dd->getOs('version');
-        $this->deviceName = $dd->getDeviceName();
-        $this->brandName = $dd->getBrandName();
-        $this->model = $dd->getModel();
-        $this->bot = $dd->isBot();
+        $this->clientFamily = Browser::getBrowserFamily($dd->getClient('name')) ?? 'unknown';
+        $this->clientVersion = $dd->getClient('version') ?? 'unknown';
+        $this->clientEngine = $dd->getClient('engine') ?? 'unknown';
+        $this->osFamily = OperatingSystem::getOsFamily($dd->getOs('name')) ?? 'unknown';
+        $this->osVersion = $dd->getOs('version') ?? 'unknown';
+        $this->deviceName = $dd->getDeviceName() ?? 'unknown';
+        $this->brandName = $dd->getBrandName() ?? 'unknown';
+        $this->model = $dd->getModel() ?? 'unknown';
+        $this->bot = $dd->isBot() ?? 'unknown';
 
     }
 
