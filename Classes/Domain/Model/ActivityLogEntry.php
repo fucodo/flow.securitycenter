@@ -140,7 +140,9 @@ class ActivityLogEntry
 
     public function getCreatedAtAgeDays(): string
     {
-        return $this->getCreatedAtAge()->format('%R%d');
+        $days = $this->getCreatedAtAge()->days;
+        $sign = $this->getCreatedAtAge()->invert === 1 ? '-' : '+';
+        return $sign . $days;
     }
 
     public function getDateForGroupBy(): string
