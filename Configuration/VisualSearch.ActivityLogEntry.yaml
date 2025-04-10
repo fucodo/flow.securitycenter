@@ -1,0 +1,61 @@
+Searches:
+  # ===========================================================================
+  # Suche nach Prüfungsort
+  # Diese Suche ist der Hauptfilter zum Filtern von Prüfungsorten
+  # ===========================================================================
+  fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry:
+    search:
+      repository: fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository
+    autocomplete:
+      searchtext:
+        label: "Suchtext"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - title
+            - userIdentity
+            - message
+            - code
+      title:
+        label: "Titel"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - title
+      message:
+        label: "Nachricht"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - message
+      code:
+        label: "Code"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - code
+      severity:
+        label: "Auswirkung"
+        selector:
+          conditions:
+            once: true
+          values:
+            Notice: Notice
+            Warning: Warning
+            Error: Error
+            OK: OK
+        matches:
+          like:
+            - severity

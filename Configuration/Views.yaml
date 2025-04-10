@@ -1,0 +1,14 @@
+-
+  requestFilter: 'mainRequest.isPackage("fucodo.contact.securitycenter") && isPackage("Neos.FluidAdaptor") && isSubPackage("ViewHelpers\Widget") && isController("Paginate") && isAction("index")'
+  options:
+    templatePathAndFilename: 'resource://KayStrobach.Bootstrap/Private/Templates/ViewHelpers/Widget/Paginate/Index.html'
+
+-
+  requestFilter: 'isPackage("fucodo.contact.securitycenter") && isFormat("html")'
+  options:
+    layoutRootPaths:
+      'fucodo.contact.securitycenter/Layouts':         'resource://fucodo.contact.securitycenter/Private/Layouts'
+    partialRootPaths:
+      'fucodo.contact.securitycenter/Partials':        'resource://fucodo.contact.securitycenter/Private/Partials'
+      'KayStrobach.VisualSearch/Partials':        'resource://KayStrobach.VisualSearch/Private/Partials'
+      'KayStrobach.Bootstrap/Partials':          'resource://KayStrobach.Bootstrap/Private/Partials'
