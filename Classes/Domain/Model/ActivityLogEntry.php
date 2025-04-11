@@ -11,6 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Flow\Entity
+ * @ORM\Table(
+ *     indexes={
+ *         @ORM\Index(name="created_at_idx", columns={"createdAt"}),
+ *         @ORM\Index(name="expires_at_idx", columns={"expiresAt"}),
+ *         @ORM\Index(name="user_identity_idx", columns={"userIdentity"}),
+ *         @ORM\Index(name="title_idx", columns={"title"}),
+ *         @ORM\Index(name="code_idx", columns={"code"}),
+ *         @ORM\Index(name="severity_idx", columns={"severity"}),
+ *         @ORM\Index(name="source_identifier_idx", columns={"sourceIdentifier"})
+ *     }
+ * )
  */
 class ActivityLogEntry
 {
