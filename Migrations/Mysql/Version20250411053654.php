@@ -39,12 +39,12 @@ final class Version20250411053654 extends AbstractMigration
         $this->addSql('CREATE INDEX severity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (severity)');
         $this->addSql('CREATE INDEX source_identifier_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (sourceIdentifier)');
 
-        if ($this->connection->getSchemaManager()->listTableDetails(static::TABLE)->hasIndex('idx_a73f0bf4616a9625')) {
-            $this->addSql('DROP INDEX idx_a73f0bf4616a9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry');
+        if (!$this->connection->getSchemaManager()->listTableDetails(static::TABLE)->hasIndex('idx_a73f0bf4616a9625')) {
+            $this->addSql('CREATE INDEX IDX_D78B3885616A9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry (parentlogentry)');
         }
-
-        $this->addSql('CREATE INDEX IDX_D78B3885616A9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry (parentlogentry)');
-        $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry ADD CONSTRAINT FK_A73F0BF4616A9628 FOREIGN KEY (parentlogentry) REFERENCES fucodo_contact_securitycenter_domain_model_activitylogentry (persistence_object_identifier)');
+        if (!$this->connection->getSchemaManager()->listTableDetails(static::TABLE)->hasForeignKey('FK_A73F0BF4616A9628')) {
+            $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry ADD CONSTRAINT FK_A73F0BF4616A9628 FOREIGN KEY (parentlogentry) REFERENCES fucodo_contact_securitycenter_domain_model_activitylogentry (persistence_object_identifier)');
+        }
     }
 
     public function down(Schema $schema): void
