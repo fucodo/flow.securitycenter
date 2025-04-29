@@ -7,108 +7,115 @@
 <b:be.setTitle>Meldungen</b:be.setTitle>
 <b:be.setTitleInfo>{activityLog -> f:count()} Meldungen</b:be.setTitleInfo>
 
-<f:render partial="Visualsearch/Search" arguments="{searchName:'fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry', activityLog:activityLog}" contentAs="value">
-    <f:widget.paginate objects="{activityLog}" as="paginatedActivityLog"
-                       configuration="{itemsPerPage: 30, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
-
-        <f:groupedFor each="{paginatedActivityLog}" as="group" groupBy="dateForGroupBy" groupKey="dateForGroupBy">
-            <h1>
-                {dateForGroupBy}
-                <small>
-                    <f:for each="{group}" as="entry" iteration="iteration">
-                        <f:if condition="{iteration.index} == 0">
-                            {entry.createdAtAgeDays}
-                            <f:translate>days</f:translate>
-                        </f:if>
-                    </f:for>
-                </small>
-            </h1>
-
-            <table class="table table-striped">
-                <tbody>
-                <f:for each="{group}" as="entry">
-                    <tr>
-                        <td style="width:10%;">
-                            <f:switch expression="{entry.severity}">
-                                <f:case value="Notice">
-                                    <span class="badge rounded-pill text-bg-info">
-                                        <i:icon name="bootstrap-info-circle"/>
-                                        <f:translate>Notice</f:translate>
-                                    </span>
-                                </f:case>
-                                <f:case value="Warning">
-                                    <span class="badge rounded-pill text-bg-warning">
-                                        <i:icon name="bootstrap-exclamation-triangle"/>
-                                        <f:translate>Warn</f:translate>
-                                    </span>
-                                </f:case>
-                                <f:case value="Error">
-                                    <span class="badge rounded-pill text-bg-danger">
-                                        <i:icon name="bootstrap-x-octagon"/>
-                                        <f:translate>Fatal</f:translate>
-                                    </span>
-                                </f:case>
-                                <f:case value="OK">
-                                    <span class="badge rounded-pill text-bg-success">
-                                        <i:icon name="bootstrap-check-circle"/>
-                                        <f:translate>OK</f:translate>
-                                    </span>
-                                </f:case>
-                            </f:switch>
-                        </td>
-                        <td style="width:10%;">
-                            {entry.createdAt -> f:format.date(format: 'H:i')}
-                        </td>
-                        <td style="width:40%;">
-                            {entry.title}
-                            <f:if condition="{entry.message}">
-                                <p>
-                                    {entry.message}
-                                </p>
-                            </f:if>
-                        </td>
-                        <td style="width:40%;">
-                            <p>
-                                <small>
-                                    {entry.device.deviceName}
-                                    <f:if condition="{entry.device.clientFamily}">
-                                        /
-                                        <i:icon name="bootstrap-browser-{entry.device.clientFamily -> sc:format.lowerCase()}"/>
-                                        {entry.device.clientFamily}
-                                        {entry.device.clientVersion}
-                                        {entry.device.clientEngine}
+<f:if condition="{activityLog}">
+    <f:then>
+        <f:render partial="Visualsearch/Search" arguments="{searchName:'fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry', activityLog:activityLog}" contentAs="value">
+            <f:widget.paginate objects="{activityLog}" as="paginatedActivityLog"
+                               configuration="{itemsPerPage: 30, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
+        
+                <f:groupedFor each="{paginatedActivityLog}" as="group" groupBy="dateForGroupBy" groupKey="dateForGroupBy">
+                    <h1>
+                        {dateForGroupBy}
+                        <small>
+                            <f:for each="{group}" as="entry" iteration="iteration">
+                                <f:if condition="{iteration.index} == 0">
+                                    {entry.createdAtAgeDays}
+                                    <f:translate>days</f:translate>
+                                </f:if>
+                            </f:for>
+                        </small>
+                    </h1>
+        
+                    <table class="table table-striped">
+                        <tbody>
+                        <f:for each="{group}" as="entry">
+                            <tr>
+                                <td style="width:10%;">
+                                    <f:switch expression="{entry.severity}">
+                                        <f:case value="Notice">
+                                            <span class="badge rounded-pill text-bg-info">
+                                                <i:icon name="bootstrap-info-circle"/>
+                                                <f:translate>Notice</f:translate>
+                                            </span>
+                                        </f:case>
+                                        <f:case value="Warning">
+                                            <span class="badge rounded-pill text-bg-warning">
+                                                <i:icon name="bootstrap-exclamation-triangle"/>
+                                                <f:translate>Warn</f:translate>
+                                            </span>
+                                        </f:case>
+                                        <f:case value="Error">
+                                            <span class="badge rounded-pill text-bg-danger">
+                                                <i:icon name="bootstrap-x-octagon"/>
+                                                <f:translate>Fatal</f:translate>
+                                            </span>
+                                        </f:case>
+                                        <f:case value="OK">
+                                            <span class="badge rounded-pill text-bg-success">
+                                                <i:icon name="bootstrap-check-circle"/>
+                                                <f:translate>OK</f:translate>
+                                            </span>
+                                        </f:case>
+                                    </f:switch>
+                                </td>
+                                <td style="width:10%;">
+                                    {entry.createdAt -> f:format.date(format: 'H:i')}
+                                </td>
+                                <td style="width:40%;">
+                                    {entry.title}
+                                    <f:if condition="{entry.message}">
+                                        <p>
+                                            {entry.message}
+                                        </p>
                                     </f:if>
-                                    <f:if condition="{entry.device.osFamily}">
-                                        /
-                                        <i:icon name="bootstrap-{entry.device.brandName -> sc:format.lowerCase()}"/>
-                                        {entry.device.brandName}
-                                        {entry.device.osFamily}
-                                        {entry.device.osVersion}
+                                </td>
+                                <td style="width:40%;">
+                                    <p>
+                                        <small>
+                                            {entry.device.deviceName}
+                                            <f:if condition="{entry.device.clientFamily}">
+                                                /
+                                                <i:icon name="bootstrap-browser-{entry.device.clientFamily -> sc:format.lowerCase()}"/>
+                                                {entry.device.clientFamily}
+                                                {entry.device.clientVersion}
+                                                {entry.device.clientEngine}
+                                            </f:if>
+                                            <f:if condition="{entry.device.osFamily}">
+                                                /
+                                                <i:icon name="bootstrap-{entry.device.brandName -> sc:format.lowerCase()}"/>
+                                                {entry.device.brandName}
+                                                {entry.device.osFamily}
+                                                {entry.device.osVersion}
+                                            </f:if>
+                                            <f:if condition="{entry.device.model}">
+                                                /
+                                                {entry.device.model}
+                                            </f:if>
+                                        </small>
+                                    </p>
+                                    <f:if condition="{entry.networkAddress.ipAdress}">
+                                        <p>
+                                            <small>
+                                                {entry.networkAddress.ipAdress}
+                                                <f:if
+                                                    condition="{entry.networkAddress.ipAdress} != {entry.networkAddress.resolvedHostnames}">
+                                                    /
+                                                    {entry.networkAddress.resolvedHostnames}
+                                                </f:if>
+                                            </small>
+                                        </p>
                                     </f:if>
-                                    <f:if condition="{entry.device.model}">
-                                        /
-                                        {entry.device.model}
-                                    </f:if>
-                                </small>
-                            </p>
-                            <f:if condition="{entry.networkAddress.ipAdress}">
-                                <p>
-                                    <small>
-                                        {entry.networkAddress.ipAdress}
-                                        <f:if
-                                            condition="{entry.networkAddress.ipAdress} != {entry.networkAddress.resolvedHostnames}">
-                                            /
-                                            {entry.networkAddress.resolvedHostnames}
-                                        </f:if>
-                                    </small>
-                                </p>
-                            </f:if>
-                        </td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
-
-        </f:groupedFor>
-    </f:widget.paginate>
-</f:render>
+                                </td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+        
+                </f:groupedFor>
+            </f:widget.paginate>
+        </f:render>
+    </f:then>
+    <f:else>
+       <div class="alert alert-info">Es gibt keine Einträge</div> 
+    </f:else>
+</f:if>
