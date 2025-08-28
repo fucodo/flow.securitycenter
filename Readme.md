@@ -190,3 +190,32 @@ werden, als diese Angabe.
 - **Datenbankfehler**: Vergewissern Sie sich, dass die Migrationen erfolgreich durchgeführt wurden.
 - **Fehlerhafte Slots**: Stellen Sie sicher, dass die Methoden-Signaturen der Slots korrekt mit den Signalen übereinstimmen.
 
+## Fixes
+
+Replace Proxy Objects with their correspondig implementation
+
+```sql
+UPDATE sbs_singlesignon_commands_cleaner_domain_model_recordmark_cb34f
+SET recordtype = REPLACE(recordtype, 'Neos\\Flow\\Persistence\\Doctrine\\Proxies\\__CG__\\', '')
+WHERE recordtype LIKE '%Proxies%';
+```
+
+Find duplicates after cleanup
+
+```sql
+SELECT recordtype, recordidentifier, COUNT(*)
+FROM sbs_singlesignon_commands_cleaner_domain_model_recordmark_cb34f
+GROUP BY recordtype, recordidentifier
+HAVING COUNT(*) > 1
+```
+
+Cleanup Duplicates (run multiple times)
+
+```sql
+DELETE FROM sbs_singlesignon_commands_cleaner_domain_model_recordmark_cb34f
+WHERE persistence_object_identifier IN (
+    SELECT u.persistence_object_identifier
+    FROM sbs_singlesignon_commands_cleaner_domain_model_recordmark_cb34f u, sbs_singlesignon_commands_cleaner_domain_model_recordmark_cb34f u2
+    WHERE u.recordtype = u2.recordtype AND u.recordidentifier = u2.recordidentifier AND u.created > u2.created
+)
+```
