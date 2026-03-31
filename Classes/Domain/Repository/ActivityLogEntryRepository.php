@@ -69,12 +69,15 @@ class ActivityLogEntryRepository extends SearchableRepository
         return $q->execute();
     }
 
-    public function create(string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false): ActivityLogEntry
+    public function create(string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false, $accountIdentifier = null): ActivityLogEntry
     {
         $identity = 'anonymous';
-        if ($this->securityContext->getAccount() instanceof Account) {
+        if ($accountIdentifier !== null) {
+            $identity = $accountIdentifier;
+        } elseif ($this->securityContext->getAccount() instanceof Account) {
             $identity = $this->securityContext->getAccount()->getAccountIdentifier();
         }
+
 
         $log = new ActivityLogEntry();
         $log->setSeverity($severity);
@@ -113,9 +116,14 @@ class ActivityLogEntryRepository extends SearchableRepository
 
     public function add($object): void
     {
-        $this->persistenceManager->allowObject($object);
-        parent::add($object);
-        $this->persistenceManager->persistAllowedObjects();
+        if (!$object instanceof ActivityLogEntry) {
+            throw new \InvalidArgumentException('Only ActivityLogEntry objects can be added to the repository', 1514392222);
+        }
+
+        $this->entityManager->getConnection()->insert(
+            $this->entityManager->getClassMetadata(ActivityLogEntry::class)->getTableName(),
+            $object->jsonSerialize()
+        );
     }
 
     public function update($object): void
