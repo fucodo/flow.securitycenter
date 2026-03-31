@@ -8,6 +8,7 @@ use fucodo\contact\securitycenter\Domain\Embeddable\DeviceEmbeddable;
 use fucodo\contact\securitycenter\Domain\Embeddable\NetworkAddressEmbeddable;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 
 /**
  * @Flow\Entity
@@ -23,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class ActivityLogEntry
+class ActivityLogEntry implements \JsonSerializable
 {
     public const SEVERITY_NOTICE = 'Notice';
     public const SEVERITY_WARNING = 'Warning';
@@ -120,6 +121,12 @@ class ActivityLogEntry
     protected $userRequestedCheckBySupport;
 
     protected string $webHookAfterRelease = '';
+
+    /**
+     * @Flow\Inject
+     * @var PersistenceManagerInterface
+     */
+    protected $persistenceManager;
 
     public function __construct()
     {
@@ -312,5 +319,45 @@ class ActivityLogEntry
     public function setWebHookAfterRelease(string $webHookAfterRelease): void
     {
         $this->webHookAfterRelease = $webHookAfterRelease;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'persistence_object_identifier' => $this->persistenceManager->getIdentifierByObject($this),
+            'parentlogentry' => $this->parentLogEntry ? $this->persistenceManager->getIdentifierByObject($this->parentLogEntry) : null,
+            'createdat' => $this->createdAt->format('Y-m-d H:i:s'),
+            'expiresat' => $this->expiresAt->format('Y-m-d H:i:s'),
+            'useridentity' => $this->userIdentity,
+            'title' => $this->title,
+            'message' => $this->message,
+            'code' => $this->code,
+            'severity' => $this->severity,
+            'source' => $this->source,
+            'sourceidentifier' => $this->sourceIdentifier,
+            'user_approval_needed' => $this->userApproval->isNeeded() ? 1 : 0,
+            'user_approval_doneat' => $this->userApproval->getDoneAt() ? $this->userApproval->getDoneAt()->format('Y-m-d H:i:s') : null,
+            'user_approval_doneby' => $this->userApproval->getDoneBy(),
+            'user_approval_signaluri' => $this->userApproval->getSignalUri(),
+            'admin_approval_needed' => $this->adminApproval->isNeeded() ? 1 : 0,
+            'admin_approval_doneat' => $this->adminApproval->getDoneAt() ? $this->adminApproval->getDoneAt()->format('Y-m-d H:i:s') : null,
+            'admin_approval_doneby' => $this->adminApproval->getDoneBy(),
+            'admin_approval_signaluri' => $this->adminApproval->getSignalUri(),
+            'netword_address_ipadress' => $this->networkAddress->getIpAdress(),
+            'netword_address_resolvedhostnames' => $this->networkAddress->getResolvedHostnames(),
+            'user_requested_support_needed' => $this->userRequestedCheckBySupport->isNeeded() ? 1 : 0,
+            'user_requested_support_doneat' => $this->userRequestedCheckBySupport->getDoneAt() ? $this->userRequestedCheckBySupport->getDoneAt()->format('Y-m-d H:i:s') : null,
+            'user_requested_support_doneby' => $this->userRequestedCheckBySupport->getDoneBy(),
+            'user_requested_support_signaluri' => $this->userRequestedCheckBySupport->getSignalUri(),
+            'device_clientfamily' => $this->device->getClientFamily(),
+            'device_osfamily' => $this->device->getOsFamily(),
+            'device_devicename' => $this->device->getDeviceName(),
+            'device_brandname' => $this->device->getBrandName(),
+            'device_model' => $this->device->getModel(),
+            'device_clientversion' => $this->device->getClientVersion(),
+            'device_clientengine' => $this->device->getClientEngine(),
+            'device_osversion' => $this->device->getOsVersion(),
+            'device_osinfo' => $this->device->getOsInfo(),
+        ];
     }
 }
