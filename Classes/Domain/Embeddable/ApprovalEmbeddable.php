@@ -18,7 +18,7 @@ class ApprovalEmbeddable
      * @ORM\Column(nullable=true)
      * @var ?\DateTimeImmutable
      */
-    protected ?\DateTimeImmutable $doneAt;
+    protected ?\DateTimeImmutable $doneAt = null;
 
     /**
      * called with post and source based maschine2maschine token
