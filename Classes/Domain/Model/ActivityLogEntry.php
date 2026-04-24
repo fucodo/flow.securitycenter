@@ -32,36 +32,50 @@ class ActivityLogEntry implements \JsonSerializable
     public const SEVERITY_OK = 'OK';
 
     /**
+     * date when the event happened
+     *
      * @var DateTimeImmutable
      */
     protected $createdAt;
 
     /**
+     * date, when the event expires, and then can be deleted
+     *
      * @var DateTimeImmutable
      */
     protected $expiresAt;
 
     /**
+     * the account creating the event (the one who did something)
+     *
      * @var string
      */
     protected $userIdentity;
 
     /**
+     * short description of the event
+     *
      * @var string
      */
     protected $title = '';
 
     /**
+     * more detailed description of the event
+     *
      * @var string
      */
     protected $message = '';
 
     /**
+     * internal code of the event, e.g. "user_login"
+     *
      * @var string
      */
     protected $code = '';
 
     /**
+     * declaration of the severity of the event
+     *
      * One of
      *
      * const SEVERITY_NOTICE = 'Notice';
@@ -74,52 +88,77 @@ class ActivityLogEntry implements \JsonSerializable
     protected $severity = self::SEVERITY_WARNING;
 
     /**
+     * defines if user approval is needed for the event
+     * might be interesting for more serious events
+     *
      * @ORM\Embedded(columnPrefix="user_approval_")
      * @var ApprovalEmbeddable
      */
     protected $userApproval;
 
     /**
+     * defines if administrative approval is needed for the event
+     * might be interesting for really serious events
+     *
      * @ORM\Embedded(columnPrefix="admin_approval_")
      * * @var ApprovalEmbeddable
      */
     protected $adminApproval;
 
     /**
+     * ip and other information regarding the network address of the user
+     *
      * @ORM\Embedded(columnPrefix="netword_address_")
      * @var NetworkAddressEmbeddable
      */
     protected $networkAddress;
 
     /**
+     * device information, e.g. browser, os, device name, etc.
+     *
      * @ORM\Embedded(columnPrefix="device_")
      * @var DeviceEmbeddable
      */
     protected $device;
 
     /**
+     * source, defines, where the event was triggered from
+     * normally internally, but can be set to "external" for events triggered by external sources or other applications
+     *
      * @var ?string
      */
     protected $source = 'internal';
 
     /**
+     * identifier of the source if the source is "external"
+     *
      * @var ?string
      */
     protected $sourceIdentifier = '';
 
     /**
+     * relation to a previous event, e.g. a login event, that triggered this event
+     *
      * @ORM\ManyToOne()
      * @var ActivityLogEntry
      */
     protected $parentLogEntry;
 
     /**
-     * -> sends email, when requested by user
+     * defines, that the users requested a check of an event by the support
+     *
+     * sends email, when requested by user
+     *
      * @ORM\Embedded(columnPrefix="user_requested_support_")
      * @var ApprovalEmbeddable
      */
     protected $userRequestedCheckBySupport;
 
+    /**
+     * defines an endpoint, that is triggered after the event was created, approved or similar
+     *
+     * @var string
+     */
     protected string $webHookAfterRelease = '';
 
     /**
