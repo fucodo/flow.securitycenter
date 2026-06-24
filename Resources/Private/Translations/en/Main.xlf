@@ -22,6 +22,22 @@
                 <source>days</source>
                 <target>days</target>
             </trans-unit>
+            <trans-unit id="column.severity" xml:space="preserve">
+                <source>Severity</source>
+                <target>Severity</target>
+            </trans-unit>
+            <trans-unit id="column.time" xml:space="preserve">
+                <source>Time</source>
+                <target>Time</target>
+            </trans-unit>
+            <trans-unit id="column.message" xml:space="preserve">
+                <source>Message</source>
+                <target>Message</target>
+            </trans-unit>
+            <trans-unit id="column.details" xml:space="preserve">
+                <source>Details</source>
+                <target>Details</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
