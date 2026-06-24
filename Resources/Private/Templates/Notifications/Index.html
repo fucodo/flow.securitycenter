@@ -1,9 +1,12 @@
-{namespace search=KayStrobach\VisualSearch\ViewHelpers}
-{namespace search=KayStrobach\VisualSearch\ViewHelpers}
-{namespace b=KayStrobach\Backend\ViewHelpers}
-{namespace i=KayStrobach\IconRegistry\ViewHelpers}
-{namespace sc=fucodo\contact\securitycenter\ViewHelpers}
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:sso="http://typo3.org/ns/SBS/SingleSignOn/ViewHelpers"
+      xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+      xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+      xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+      xmlns:bs="http://typo3.org/ns/KayStrobach/Bootstrap/ViewHelpers"
+      xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
 <b:be.setTitle>Meldungen</b:be.setTitle>
 <b:be.setTitleInfo>{activityLog -> f:count()} Meldungen</b:be.setTitleInfo>
 
