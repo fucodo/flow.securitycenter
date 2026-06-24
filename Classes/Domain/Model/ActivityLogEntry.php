@@ -156,10 +156,10 @@ class ActivityLogEntry implements \JsonSerializable
 
     /**
      * defines an endpoint, that is triggered after the event was created, approved or similar
-     *
-     * @var string
+     * @ORM\Column(type="string", length=2048, nullable=true)
+     * @var ?string
      */
-    protected string $webHookAfterRelease = '';
+    protected ?string $webHookAfterRelease = '';
 
     /**
      * @Flow\Inject
@@ -350,12 +350,12 @@ class ActivityLogEntry implements \JsonSerializable
         $this->userRequestedCheckBySupport = $userRequestedCheckBySupport;
     }
 
-    public function getWebHookAfterRelease(): string
+    public function getWebHookAfterRelease(): ?string
     {
         return $this->webHookAfterRelease;
     }
 
-    public function setWebHookAfterRelease(string $webHookAfterRelease): void
+    public function setWebHookAfterRelease(?string $webHookAfterRelease): void
     {
         $this->webHookAfterRelease = $webHookAfterRelease;
     }
