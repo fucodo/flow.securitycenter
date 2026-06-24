@@ -54,9 +54,9 @@ Searches:
           conditions:
             once: true
           values:
-            Notice: Notice
-            Warning: Warning
-            Error: Error
+            Notice: Hinweis
+            Warning: Warnung
+            Error: Fehler
             OK: OK
         matches:
           like:

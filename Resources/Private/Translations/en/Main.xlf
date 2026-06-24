@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="fucodo.contact.securitycenter" source-language="en" target-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="Notice" xml:space="preserve">
+                <source>Notice</source>
+                <target>Notice</target>
+            </trans-unit>
+            <trans-unit id="Warning" xml:space="preserve">
+                <source>Warning</source>
+                <target>Warning</target>
+            </trans-unit>
+            <trans-unit id="Error" xml:space="preserve">
+                <source>Error</source>
+                <target>Error</target>
+            </trans-unit>
+            <trans-unit id="OK" xml:space="preserve">
+                <source>OK</source>
+                <target>OK</target>
+            </trans-unit>
+            <trans-unit id="days" xml:space="preserve">
+                <source>days</source>
+                <target>days</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

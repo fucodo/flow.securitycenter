@@ -12,7 +12,7 @@
         <f:render partial="Visualsearch/Search" arguments="{searchName:'fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry', activityLog:activityLog}" contentAs="value">
             <f:widget.paginate objects="{activityLog}" as="paginatedActivityLog"
                                configuration="{itemsPerPage: 30, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
-        
+
                 <f:groupedFor each="{paginatedActivityLog}" as="group" groupBy="dateForGroupBy" groupKey="dateForGroupBy">
                     <h1>
                         {dateForGroupBy}
@@ -20,12 +20,12 @@
                             <f:for each="{group}" as="entry" iteration="iteration">
                                 <f:if condition="{iteration.index} == 0">
                                     {entry.createdAtAgeDays}
-                                    <f:translate>days</f:translate>
+                                    <f:translate id="days">days</f:translate>
                                 </f:if>
                             </f:for>
                         </small>
                     </h1>
-        
+
                     <table class="table table-striped">
                         <tbody>
                         <f:for each="{group}" as="entry">
@@ -41,13 +41,13 @@
                                         <f:case value="Warning">
                                             <span class="badge rounded-pill text-bg-warning">
                                                 <i:icon name="bootstrap-exclamation-triangle"/>
-                                                <f:translate>Warn</f:translate>
+                                                <f:translate>Warning</f:translate>
                                             </span>
                                         </f:case>
                                         <f:case value="Error">
                                             <span class="badge rounded-pill text-bg-danger">
                                                 <i:icon name="bootstrap-x-octagon"/>
-                                                <f:translate>Fatal</f:translate>
+                                                <f:translate>Error</f:translate>
                                             </span>
                                         </f:case>
                                         <f:case value="OK">
@@ -75,14 +75,14 @@
                                             {entry.device.deviceName}
                                             <f:if condition="{entry.device.clientFamily}">
                                                 /
-                                                <i:icon name="bootstrap-browser-{entry.device.clientFamily -> sc:format.lowerCase()}"/>
+                                                <i:icon name="bootstrap-browser-{entry.device.clientFamily -> f:format.case(mode: 'lower')}"/>
                                                 {entry.device.clientFamily}
                                                 {entry.device.clientVersion}
                                                 {entry.device.clientEngine}
                                             </f:if>
                                             <f:if condition="{entry.device.osFamily}">
                                                 /
-                                                <i:icon name="bootstrap-{entry.device.brandName -> sc:format.lowerCase()}"/>
+                                                <i:icon name="bootstrap-{entry.device.brandName -> f:format.case(mode: 'lower')}"/>
                                                 {entry.device.brandName}
                                                 {entry.device.osFamily}
                                                 {entry.device.osVersion}
@@ -110,12 +110,13 @@
                         </f:for>
                         </tbody>
                     </table>
-        
+
                 </f:groupedFor>
             </f:widget.paginate>
         </f:render>
     </f:then>
     <f:else>
-       <div class="alert alert-info">Es gibt keine Einträge</div> 
+       <div class="alert alert-info">Es gibt keine Einträge</div>
     </f:else>
 </f:if>
+</html>
