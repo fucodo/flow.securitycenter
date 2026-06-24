@@ -120,6 +120,8 @@ class ActivityLogEntryRepository extends SearchableRepository
             throw new \InvalidArgumentException('Only ActivityLogEntry objects can be added to the repository', 1514392222);
         }
 
+        $this->deleteExpiredEntries();
+
         $this->entityManager->getConnection()->insert(
             $this->entityManager->getClassMetadata(ActivityLogEntry::class)->getTableName(),
             $object->jsonSerialize()
@@ -131,10 +133,24 @@ class ActivityLogEntryRepository extends SearchableRepository
         $this->persistenceManager->allowObject($object);
         parent::update($object);
         $this->persistenceManager->persistAllowedObjects();
+        $this->maybeDeleteExpiredEntries();
+    }
+
+    protected function maybeDeleteExpiredEntries()
+    {
+        if (random_int(1, 100) > 30) {
+            return;
+        }
+
+        $this->deleteExpiredEntries();
     }
 
     public function deleteExpiredEntries(): void
     {
-
+        $tableName = $this->entityManager->getClassMetadata(ActivityLogEntry::class)->getTableName();
+        $this->entityManager->getConnection()->executeStatement(
+            'DELETE FROM ' . $tableName . ' WHERE expiresAt < :now',
+            ['now' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')]
+        );
     }
 }
