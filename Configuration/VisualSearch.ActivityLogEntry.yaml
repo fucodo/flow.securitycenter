@@ -6,6 +6,15 @@ Searches:
   fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry:
     search:
       repository: fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository
+    sorting:
+      1100:
+        label: Datum aufsteigend
+        fields:
+          'createdAt': ASC
+      1200:
+        label: Datum fallend
+        fields:
+          'createdAt': DESC
     autocomplete:
       searchtext:
         label: "Suchtext"
