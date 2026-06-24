@@ -19,24 +19,17 @@ Searches:
             - userIdentity
             - message
             - code
-      title:
-        label: "Titel"
+      date:
+        label: "Datum (Tag)"
+        inputType: date
         selector:
           conditions:
             once: true
           freeInput: true
+          dateFormat: Y-m-d
         matches:
-          like:
-            - title
-      message:
-        label: "Nachricht"
-        selector:
-          conditions:
-            once: true
-          freeInput: true
-        matches:
-          like:
-            - message
+          \KayStrobach\VisualSearch\Demands\Date\DateDemand:
+            - createdAt
       code:
         label: "Code"
         selector:
@@ -59,3 +52,20 @@ Searches:
         matches:
           like:
             - severity
+        # fails due to restricons in the querybuilder
+        # system:
+        #   label: "Systeminformationen"
+        #   selector:
+        #     conditions:
+        #       once: true
+        #     freeInput: true
+        #   matches:
+        #     like:
+        #       - device.clientFamily
+        #       - device.clientVersion
+        #       - device.clientEngine
+        #       - device.osFamily
+        #       - device.isInfo
+        #       - device.osVersion
+        #       - device.brandName
+        #       - device.model
