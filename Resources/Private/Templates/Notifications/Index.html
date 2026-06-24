@@ -10,12 +10,12 @@
 <b:be.setTitle>Meldungen</b:be.setTitle>
 <b:be.setTitleInfo>{activityLog -> f:count()} Meldungen</b:be.setTitleInfo>
 
-<f:if condition="{activityLog}">
-    <f:then>
-        <f:render partial="Visualsearch/Search" arguments="{searchName:'fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry', activityLog:activityLog}" contentAs="value">
-            <f:widget.paginate objects="{activityLog}" as="paginatedActivityLog"
-                               configuration="{itemsPerPage: 30, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
+<f:render partial="Visualsearch/Search" arguments="{searchName:'fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry', activityLog:activityLog}" contentAs="value">
+    <f:widget.paginate objects="{activityLog}" as="paginatedActivityLog"
+                       configuration="{itemsPerPage: 30, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
 
+        <f:if condition="{activityLog}">
+            <f:then>
                 <f:groupedFor each="{paginatedActivityLog}" as="group" groupBy="dateForGroupBy" groupKey="dateForGroupBy">
                     <h1>
                         {dateForGroupBy}
@@ -115,11 +115,11 @@
                     </table>
 
                 </f:groupedFor>
-            </f:widget.paginate>
-        </f:render>
-    </f:then>
-    <f:else>
-       <div class="alert alert-info">Es gibt keine Einträge</div>
-    </f:else>
-</f:if>
+            </f:then>
+            <f:else>
+                <div class="alert alert-info">Es gibt keine Einträge</div>
+            </f:else>
+        </f:if>
+    </f:widget.paginate>
+</f:render>
 </html>
