@@ -70,7 +70,7 @@ class DeviceEmbeddable
 
     public function initFromEnvironment(): void
     {
-        $userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? ''; // change this to the useragent you want to parse
         $clientHints = ClientHints::factory($_SERVER); // client hints are optional
         $dd = new DeviceDetector($userAgent, $clientHints);
         $dd->setYamlParser(new \DeviceDetector\Yaml\Symfony());

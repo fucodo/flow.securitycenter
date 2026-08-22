@@ -71,13 +71,17 @@ class ActivityLogEntryRepository extends SearchableRepository
 
     public function create(string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false, $accountIdentifier = null): ActivityLogEntry
     {
-        $identity = 'anonymous';
-        if ($accountIdentifier !== null) {
-            $identity = $accountIdentifier;
-        } elseif ($this->securityContext->getAccount() instanceof Account) {
-            $identity = $this->securityContext->getAccount()->getAccountIdentifier();
+        $identity = $accountIdentifier;
+
+        if (($identity === null) && ($this->securityContext->canBeInitialized())) {
+            if ($this->securityContext->getAccount() instanceof Account) {
+                $identity = $this->securityContext->getAccount()->getAccountIdentifier();
+            }
         }
 
+        if ($identity === null) {
+            $identity = 'anonymous';
+        }
 
         $log = new ActivityLogEntry();
         $log->setSeverity($severity);

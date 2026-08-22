@@ -31,16 +31,19 @@ class NetworkAddressEmbeddable
 
     public function initFromEnvironment(): void
     {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
         }
 
         $this->ipAdress = $ip;
-        $this->resolvedHostnames = gethostbyaddr($this->ipAdress);
+        if (!empty($this->ipAdress)) {
+            $this->resolvedHostnames = gethostbyaddr($this->ipAdress);
+        } else {
+            $this->resolvedHostnames = 'unknown';
+        }
     }
 
     public function getIpAdress(): string
