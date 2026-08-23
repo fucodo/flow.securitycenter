@@ -16,12 +16,12 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
  *     indexes={
  *         @ORM\Index(name="created_at_idx", columns={"createdAt"}),
  *         @ORM\Index(name="expires_at_idx", columns={"expiresAt"}),
- *         @ORM\Index(name="user_identity_idx", columns={"userIdentity"}),
  *         @ORM\Index(name="title_idx", columns={"title"}),
  *         @ORM\Index(name="code_idx", columns={"code"}),
  *         @ORM\Index(name="severity_idx", columns={"severity"}),
- *         @ORM\Index(name="source_identifier_idx", columns={"sourceIdentifier"})
- *     }
+ *         @ORM\Index(name="source_identifier_idx", columns={"sourceIdentifier"}),
+ *         @ORM\Index(name="contextkey_value_idx", columns={"contextKey", "contextValue"})
+ *   }
  * )
  */
 class ActivityLogEntry implements \JsonSerializable
@@ -31,26 +31,38 @@ class ActivityLogEntry implements \JsonSerializable
     public const SEVERITY_ERROR = 'Error';
     public const SEVERITY_OK = 'OK';
 
+    #[Flow\InjectConfiguration(path: 'defaults', package: 'fucodo.contact.securitycenter')]
+    #[Flow\Transient()]
+    protected array $defaults = [];
+
     /**
      * date when the event happened
      *
      * @var DateTimeImmutable
      */
-    protected $createdAt;
+    protected DateTimeImmutable $createdAt;
 
     /**
      * date, when the event expires, and then can be deleted
      *
      * @var DateTimeImmutable
      */
-    protected $expiresAt;
+    protected DateTimeImmutable $expiresAt;
 
     /**
-     * the account creating the event (the one who did something)
+     * the grouping dimension this entry belongs to right now, e.g. "account", "organization", "group"
+     * defaults to "account" so existing userIdentity-based grouping keeps working unchanged
      *
      * @var string
      */
-    protected $userIdentity;
+    protected string $contextKey = 'account';
+
+    /**
+     * the concrete value for that dimension, e.g. the account identifier, org id, group id
+     *
+     * @var string
+     */
+    protected string $contextValue = '';
 
     /**
      * short description of the event
@@ -101,7 +113,7 @@ class ActivityLogEntry implements \JsonSerializable
      * might be interesting for really serious events
      *
      * @ORM\Embedded(columnPrefix="admin_approval_")
-     * * @var ApprovalEmbeddable
+     * @var ApprovalEmbeddable
      */
     protected $adminApproval;
 
@@ -125,24 +137,24 @@ class ActivityLogEntry implements \JsonSerializable
      * source, defines, where the event was triggered from
      * normally internally, but can be set to "external" for events triggered by external sources or other applications
      *
-     * @var ?string
+     * @var string
      */
-    protected $source = 'internal';
+    protected string $source = 'internal';
 
     /**
      * identifier of the source if the source is "external"
      *
-     * @var ?string
+     * @var string
      */
-    protected $sourceIdentifier = '';
+    protected string $sourceIdentifier = '';
 
     /**
      * relation to a previous event, e.g. a login event, that triggered this event
      *
      * @ORM\ManyToOne()
-     * @var ActivityLogEntry
+     * @var ?ActivityLogEntry
      */
-    protected $parentLogEntry;
+    protected ?ActivityLogEntry $parentLogEntry = null;
 
     /**
      * defines, that the users requested a check of an event by the support
@@ -152,7 +164,7 @@ class ActivityLogEntry implements \JsonSerializable
      * @ORM\Embedded(columnPrefix="user_requested_support_")
      * @var ApprovalEmbeddable
      */
-    protected $userRequestedCheckBySupport;
+    protected ApprovalEmbeddable $userRequestedCheckBySupport;
 
     /**
      * defines an endpoint, that is triggered after the event was created, approved or similar
@@ -173,7 +185,7 @@ class ActivityLogEntry implements \JsonSerializable
         $this->userApproval = new ApprovalEmbeddable();
         $this->adminApproval = new ApprovalEmbeddable();
         $this->userRequestedCheckBySupport = new ApprovalEmbeddable();
-        $this->expiresAt = new \DateTimeImmutable('+3 months');
+        $this->expiresAt = new \DateTimeImmutable($this->defaults['expiresAt'] ?? '+3 months');
 
         $this->networkAddress = NetworkAddressEmbeddable::createFromEnvironment();
         $this->device = DeviceEmbeddable::createFromEnvironment();
@@ -217,14 +229,47 @@ class ActivityLogEntry implements \JsonSerializable
         $this->expiresAt = $expiresAt;
     }
 
+    /**
+     * @return string
+     * @deprecated  use context instead
+ */
     public function getUserIdentity(): string
     {
-        return $this->userIdentity;
+        if ($this->contextKey === 'account') {
+            return $this->contextValue;
+        }
+        return '';
     }
 
+    /**
+     * @deprecated  use context instead
+     * @param string $userIdentity
+     * @return void
+     */
     public function setUserIdentity(string $userIdentity): void
     {
-        $this->userIdentity = $userIdentity;
+        $this->contextKey = 'account';
+        $this->contextValue = $userIdentity;
+    }
+
+    public function getContextKey(): string
+    {
+        return $this->contextKey;
+    }
+
+    public function setContextKey(string $contextKey): void
+    {
+        $this->contextKey = $contextKey;
+    }
+
+    public function getContextValue(): string
+    {
+        return $this->contextValue;
+    }
+
+    public function setContextValue(string $contextValue): void
+    {
+        $this->contextValue = $contextValue;
     }
 
     public function getTitle(): string

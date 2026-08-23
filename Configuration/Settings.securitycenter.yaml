@@ -1,6 +1,8 @@
 fucodo:
   contact:
     securitycenter:
+      defaults:
+        expiresAt: '+3 months'
       cleanup:
         fallback:
           enabled: true

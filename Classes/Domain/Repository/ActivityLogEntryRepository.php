@@ -66,17 +66,44 @@ class ActivityLogEntryRepository extends SearchableRepository
             $q->logicalAnd(
                 [
                     $q->getConstraint(),
-                    $q->equals(
-                        'userIdentity',
-                        $accountIdentifier
+                    $q->logicalAnd(
+                        [
+                            $q->equals(
+                                'contextKey',
+                                'account'
+                            ),
+                            $q->equals(
+                                'contextValue',
+                                $accountIdentifier
+                            )
+                        ]
                     )
+
                 ]
             )
         );
         return $q->execute();
     }
 
-    public function create(string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false, $accountIdentifier = null): ActivityLogEntry
+    public function createForContext(string $context, string $contextValue, string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false): ActivityLogEntry
+    {
+        $log = new ActivityLogEntry();
+        $log->setSeverity($severity);
+        $log->setTitle($title);
+        $log->setCode($code);
+        $log->setMessage($message);
+        $log->getAdminApproval()->setNeeded($adminApproval);
+        $log->getUserApproval()->setNeeded($userApproval);
+        $log->setSeverity(ActivityLogEntry::SEVERITY_NOTICE);
+        $log->setContextKey($context);
+        $log->setContextValue($contextValue);
+
+        $this->add($log);
+
+        return $log;
+    }
+
+    public function createForAccount(?string $accountIdentifier, string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false): ActivityLogEntry
     {
         $identity = $accountIdentifier;
 
@@ -90,19 +117,15 @@ class ActivityLogEntryRepository extends SearchableRepository
             $identity = 'anonymous';
         }
 
-        $log = new ActivityLogEntry();
-        $log->setSeverity($severity);
-        $log->setTitle($title);
-        $log->setCode($code);
-        $log->setMessage($message);
-        $log->getAdminApproval()->setNeeded($adminApproval);
-        $log->getUserApproval()->setNeeded($userApproval);
-        $log->setSeverity(ActivityLogEntry::SEVERITY_NOTICE);
-        $log->setUserIdentity($identity);
+        return $this->createForContext('account', $identity, $severity, $title, $code, $message, $userApproval, $adminApproval);
+    }
 
-        $this->add($log);
-
-        return $log;
+    /**
+     * @deprecated use createForContext or createForAccount instead
+     */
+    public function create(string $severity, string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false, $accountIdentifier = null): ActivityLogEntry
+    {
+        return $this->createForAccount($accountIdentifier,$severity, $title, $code, $message, $userApproval, $adminApproval);
     }
 
     public function createWarning(string $title, string $code = '', string $message = '', bool $userApproval = false, bool $adminApproval = false): ActivityLogEntry
