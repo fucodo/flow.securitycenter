@@ -31,7 +31,7 @@ class LoginSlot
         $identifier = $token->getAccount()->getAccountIdentifier();
         $log = new ActivityLogEntry();
         $log->setTitle('Login');
-        $log->setSeverity(ActivityLogEntry::SEVERITY_NOTICE);
+        $log->setSeverity(ActivityLogEntry::SEVERITY_OK);
         $log->setUserIdentity($identifier);
         $this->persistenceManager->allowObject($log);
         $this->persistenceManager->add($log);
