@@ -1,0 +1,12 @@
+fucodo:
+  contact:
+    securitycenter:
+      cleanup:
+        fallback:
+          enabled: true
+          # only actually deletes if the last successful cleanup is older than this
+          maxAgeInSeconds: 7200
+          # small bounded batch so a request that happens to trigger it stays fast
+          batchSize: 100
+          # cheap random gate so we don't check the cache on every single write
+          checkProbability: 500   # 1-in-N requests even considers checking

@@ -1,4 +1,5 @@
 <?php
+
 namespace fucodo\contact\securitycenter\Domain\Repository;
 
 /*
@@ -7,28 +8,34 @@ namespace fucodo\contact\securitycenter\Domain\Repository;
 
 use fucodo\contact\securitycenter\Domain\Model\ActivityLogEntry;
 use KayStrobach\VisualSearch\Domain\Repository\SearchableRepository;
+use Neos\Cache\Frontend\FrontendInterface;
+use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Persistence\QueryInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 use Neos\Flow\Security\Account;
 use Neos\Flow\Security\Context;
 
-/**
- * @Flow\Scope("singleton")
- */
+#[Flow\Scope("singleton")]
 class ActivityLogEntryRepository extends SearchableRepository
 {
     /**
      * The security context of the current request
-     *
-     * @Flow\Inject
-     * @var Context
      */
-    protected $securityContext;
+    #[Flow\Inject]
+    protected Context $securityContext;
 
     protected $defaultOrderings = [
         'createdAt' => QueryInterface::ORDER_DESCENDING
     ];
+
+    #[Flow\InjectConfiguration(path: "cleanup.fallback")]
+    protected ?array $fallbackConfig = null;
+
+    protected null|FrontendInterface|DependencyProxy $cleanupCache = null;
+
+    protected const CLEANUP_CACHE_KEY = 'lastCleanupRunAt';
 
     public function findByCurrentlyLoggedInAccount(): ?QueryResultInterface
     {
@@ -124,12 +131,12 @@ class ActivityLogEntryRepository extends SearchableRepository
             throw new \InvalidArgumentException('Only ActivityLogEntry objects can be added to the repository', 1514392222);
         }
 
-        $this->deleteExpiredEntries();
-
         $this->entityManager->getConnection()->insert(
             $this->entityManager->getClassMetadata(ActivityLogEntry::class)->getTableName(),
             $object->jsonSerialize()
         );
+
+        $this->maybeRunFallbackCleanup();
     }
 
     public function update($object): void
@@ -137,24 +144,42 @@ class ActivityLogEntryRepository extends SearchableRepository
         $this->persistenceManager->allowObject($object);
         parent::update($object);
         $this->persistenceManager->persistAllowedObjects();
-        $this->maybeDeleteExpiredEntries();
+        $this->maybeRunFallbackCleanup();
     }
 
-    protected function maybeDeleteExpiredEntries()
+    protected function maybeRunFallbackCleanup(): void
     {
-        if (random_int(1, 100) > 30) {
+        if (($this->fallbackConfig['enabled'] ?? true) === false) {
+            return;
+        }
+        if (random_int(1, max(1, (int)($this->fallbackConfig['checkProbability'] ?? 500))) !== 1) {
             return;
         }
 
-        $this->deleteExpiredEntries();
+        $lastRunAt = $this->cleanupCache->get(self::CLEANUP_CACHE_KEY);
+        $maxAge = (int)($this->fallbackConfig['maxAgeInSeconds'] ?? 7200);
+
+        if ($lastRunAt !== false && (time() - (int)$lastRunAt) < $maxAge) {
+            return;
+        }
+
+        // mark as run immediately so concurrent requests in the same window don't pile on
+        $this->cleanupCache->set(self::CLEANUP_CACHE_KEY, time());
+
+        $this->deleteExpiredEntriesBatch((int)($this->fallbackConfig['batchSize'] ?? 100));
     }
 
-    public function deleteExpiredEntries(): void
+    public function deleteExpiredEntriesBatch(int $limit = 1000): int
     {
         $tableName = $this->entityManager->getClassMetadata(ActivityLogEntry::class)->getTableName();
-        $this->entityManager->getConnection()->executeStatement(
-            'DELETE FROM ' . $tableName . ' WHERE expiresAt < :now',
-            ['now' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')]
+        return (int)$this->entityManager->getConnection()->executeStatement(
+            'DELETE FROM ' . $tableName . ' WHERE expiresAt < :now LIMIT :limit',
+            [
+                'now' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'), 'limit' => $limit
+            ],
+            [
+                'limit' => \PDO::PARAM_INT
+            ]
         );
     }
 }

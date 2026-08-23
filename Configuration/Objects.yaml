@@ -1,0 +1,18 @@
+fucodo\contact\securitycenter\Domain\Repository\ActivityLogEntryRepository:
+  properties:
+    cleanupCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: 'fucodo_contact_securitycenter_cleanup'
+fucodo\contact\securitycenter\Command\SecurityCenterCommandController:
+  properties:
+    cleanupCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: 'fucodo_contact_securitycenter_cleanup'
