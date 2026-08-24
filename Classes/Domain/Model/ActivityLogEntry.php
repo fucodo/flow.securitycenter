@@ -412,7 +412,6 @@ class ActivityLogEntry implements \JsonSerializable
             'parentlogentry' => $this->parentLogEntry ? $this->persistenceManager->getIdentifierByObject($this->parentLogEntry) : null,
             'createdat' => $this->createdAt->format('Y-m-d H:i:s'),
             'expiresat' => $this->expiresAt->format('Y-m-d H:i:s'),
-            'useridentity' => $this->userIdentity,
             'title' => $this->title,
             'message' => $this->message,
             'code' => $this->code,
@@ -442,6 +441,8 @@ class ActivityLogEntry implements \JsonSerializable
             'device_clientengine' => $this->device->getClientEngine(),
             'device_osversion' => $this->device->getOsVersion(),
             'device_osinfo' => $this->device->getOsInfo(),
+            'contextkey' => $this->contextKey ?? 'account',
+            'contextvalue' => $this->contextValue ?? '',
         ];
     }
 }
