@@ -31,13 +31,13 @@ final class Version20250411053654 extends AbstractMigration
             $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry DROP FOREIGN KEY FK_A73F0BF4616A9628');
         }
 
-        $this->addSql('CREATE INDEX created_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (createdAt)');
-        $this->addSql('CREATE INDEX expires_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (expiresAt)');
-        $this->addSql('CREATE INDEX user_identity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (userIdentity)');
-        $this->addSql('CREATE INDEX title_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (title)');
-        $this->addSql('CREATE INDEX code_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (code)');
-        $this->addSql('CREATE INDEX severity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (severity)');
-        $this->addSql('CREATE INDEX source_identifier_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (sourceIdentifier)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS created_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (createdAt)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS expires_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (expiresAt)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS user_identity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (userIdentity)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS title_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (title)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS code_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (code)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS severity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (severity)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS source_identifier_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (sourceIdentifier)');
 
         if (!$this->connection->getSchemaManager()->listTableDetails(static::TABLE)->hasIndex('idx_a73f0bf4616a9625')) {
             $this->addSql('CREATE INDEX IDX_D78B3885616A9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry (parentlogentry)');

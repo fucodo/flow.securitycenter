@@ -12,6 +12,8 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20260823092026 extends AbstractMigration
 {
+    protected const TABLE = 'fucodo_contact_securitycenter_domain_model_activitylogentry';
+
     public function getDescription(): string
     {
         return '';
@@ -25,17 +27,19 @@ final class Version20260823092026 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
         );
 
-        $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry DROP FOREIGN KEY FK_A73F0BF4616A9625');
+        if ($this->connection->getSchemaManager()->listTableDetails(self::TABLE)->hasForeignKey('FK_A73F0BF4616A9625')) {
+            $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry DROP FOREIGN KEY FK_A73F0BF4616A9625');
+        }
         $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry DROP useridentity');
-        $this->addSql('CREATE INDEX created_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (createdAt)');
-        $this->addSql('CREATE INDEX expires_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (expiresAt)');
-        $this->addSql('CREATE INDEX title_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (title)');
-        $this->addSql('CREATE INDEX code_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (code)');
-        $this->addSql('CREATE INDEX severity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (severity)');
-        $this->addSql('CREATE INDEX source_identifier_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (sourceIdentifier)');
-        $this->addSql('CREATE INDEX contextkey_value_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (contextKey, contextValue)');
-        $this->addSql('DROP INDEX idx_a73f0bf4616a9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry');
-        $this->addSql('CREATE INDEX IDX_D78B3885616A9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry (parentlogentry)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS created_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (createdAt)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS expires_at_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (expiresAt)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS title_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (title)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS code_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (code)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS severity_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (severity)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS source_identifier_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (sourceIdentifier)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS contextkey_value_idx ON fucodo_contact_securitycenter_domain_model_activitylogentry (contextKey, contextValue)');
+        $this->addSql('DROP INDEX IF EXISTS idx_a73f0bf4616a9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_D78B3885616A9625 ON fucodo_contact_securitycenter_domain_model_activitylogentry (parentlogentry)');
         $this->addSql('ALTER TABLE fucodo_contact_securitycenter_domain_model_activitylogentry ADD CONSTRAINT FK_A73F0BF4616A9625 FOREIGN KEY (parentlogentry) REFERENCES fucodo_contact_securitycenter_domain_model_activitylogentry (persistence_object_identifier)');
     }
 
